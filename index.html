@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Levels Composer</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="app-shell">
+    <main class="workspace" id="workspace">
+      <section class="preview-panel glass-card" id="previewPanel">
+        <div class="preview-stage" id="previewStage">
+          <div class="canvas-shell" id="canvasFrame">
+            <canvas id="previewCanvas" width="1080" height="1080" aria-label="Levels preview"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls-panel glass-card" id="controlsPanel">
+        <div class="controls-scaler" id="controlsScaler">
+          <section class="dashboard-panel">
+            <div class="dashboard-top">
+              <div class="export-block">
+                <p class="dashboard-label">Filename</p>
+                <input id="exportNameInput" class="export-name-input" type="text" value="levels_L1-P1-V1-G1-F1" />
+              </div>
+              <button id="downloadBtn" class="download-btn" type="button">Download PNG</button>
+            </div>
+          </section>
+
+          <section class="control-grid" id="sliderControls"></section>
+        </div>
+
+        <input id="folderInput" type="file" webkitdirectory directory multiple hidden />
+      </section>
+    </main>
+  </div>
+
+  <script defer src="./app.js"></script>
+</body>
+</html>
