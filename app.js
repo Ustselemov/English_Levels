@@ -123,6 +123,13 @@ function buildControls() {
   downloadBtn.addEventListener('click', async () => {
     downloadBtn.disabled = true;
     try {
+      try {
+        await exportFromPreviewCanvas();
+        return;
+      } catch (error) {
+        if (location.protocol !== 'file:') throw error;
+      }
+
       if (!exportAssetMap.size) {
         const granted = await requestExportFolder();
         if (!granted) return;
@@ -326,6 +333,11 @@ function hydrateExportAssets(files) {
     const normalized = normalizeSelectedPath(raw);
     if (normalized.toLowerCase().endsWith('.png')) exportAssetMap.set(normalized, file);
   });
+}
+
+async function exportFromPreviewCanvas() {
+  const blob = await canvasToBlob(canvas);
+  await triggerDownload(blob);
 }
 
 async function exportFromTrustedAssets() {
