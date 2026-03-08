@@ -123,11 +123,16 @@ function buildControls() {
   downloadBtn.addEventListener('click', async () => {
     downloadBtn.disabled = true;
     try {
+      if (location.protocol !== 'file:') {
+        await exportFromHostedCanvas();
+        return;
+      }
+
       try {
         await exportFromPreviewCanvas();
         return;
       } catch (error) {
-        if (location.protocol !== 'file:') throw error;
+        // Local file previews can taint canvas, so only local mode falls back to folder access.
       }
 
       if (!exportAssetMap.size) {
@@ -335,6 +340,15 @@ function hydrateExportAssets(files) {
   });
 }
 
+async function exportFromHostedCanvas() {
+  try {
+    const blob = await canvasToBlob(canvas);
+    await triggerDownload(blob);
+  } catch (error) {
+    await triggerDownloadFromDataUrl(canvas.toDataURL('image/png'));
+  }
+}
+
 async function exportFromPreviewCanvas() {
   const blob = await canvasToBlob(canvas);
   await triggerDownload(blob);
@@ -380,13 +394,26 @@ function canvasToBlob(targetCanvas) {
 
 async function triggerDownload(blob) {
   const url = URL.createObjectURL(blob);
+  try {
+    await triggerDownloadFromDataUrl(url, true);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+async function triggerDownloadFromDataUrl(url, isObjectUrl = false) {
   const link = document.createElement('a');
   link.href = url;
   link.download = buildExportName();
+  link.rel = 'noopener';
   document.body.append(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+
+  // iOS Safari may ignore the download attribute; opening the image is a safer fallback.
+  if (!isObjectUrl && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    window.open(url, '_blank', 'noopener');
+  }
 }
 
 function sanitizeFilename(value) {
