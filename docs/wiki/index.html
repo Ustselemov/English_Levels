@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Levels Docs</title>
+  <style>
+    body { margin: 0; font-family: Georgia, serif; display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+    nav { padding: 20px; background: #eef4ff; border-right: 1px solid #c9d8f4; }
+    nav a { display: block; margin: 0 0 10px; color: #14306d; text-decoration: none; }
+    main { padding: 24px; overflow: auto; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body>
+  <nav>
+    <strong>English Levels</strong>
+    <a href="#" data-doc="../PRODUCT_OVERVIEW.md">Product Overview</a>
+    <a href="#" data-doc="../TECHNICAL_SPECIFICATION.md">Technical Specification</a>
+    <a href="#" data-doc="../FUNCTIONAL_REQUIREMENTS.md">Functional Requirements</a>
+    <a href="#" data-doc="../NON_FUNCTIONAL_REQUIREMENTS.md">Non-Functional Requirements</a>
+    <a href="#" data-doc="../SYSTEM_ARCHITECTURE.md">System Architecture</a>
+    <a href="#" data-doc="../ARCHITECTURAL_DECISIONS.md">Architectural Decisions</a>
+    <a href="#" data-doc="../DEVELOPMENT_GUIDE.md">Development Guide</a>
+    <a href="#" data-doc="../TESTING.md">Testing</a>
+    <a href="#" data-doc="../ROADMAP.md">Roadmap</a>
+    <a href="#" data-doc="../security/SECURITY.md">Security</a>
+    <a href="#" data-doc="../diagrams/architecture.md">Architecture Diagram</a>
+  </nav>
+  <main>
+    <pre id="content">Loading...</pre>
+  </main>
+  <script>
+    const content = document.getElementById('content');
+    async function loadDoc(path) {
+      const response = await fetch(path);
+      content.textContent = await response.text();
+    }
+    document.querySelectorAll('[data-doc]').forEach((link) => {
+      link.addEventListener('click', async (event) => {
+        event.preventDefault();
+        await loadDoc(link.dataset.doc);
+      });
+    });
+    loadDoc('../PRODUCT_OVERVIEW.md');
+  </script>
+</body>
+</html>

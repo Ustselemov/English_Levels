@@ -1,3 +1,6 @@
+// Generated with the assistance of Codex AI
+// Prompted by Ustselemov
+
 const LEVELS_ROOT = './levels';
 const CANVAS_SIZE = 1080;
 
@@ -443,3 +446,4 @@ window.addEventListener('load', fitDesktopLayout);
 buildControls();
 render();
 fitDesktopLayout();
+

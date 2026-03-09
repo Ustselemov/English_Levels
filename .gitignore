@@ -1,4 +1,10 @@
-exports/
+.env
+*.env
+*.key
+*.pem
 *.log
+node_modules/
+__pycache__/
+exports/
 Thumbs.db
 .DS_Store
